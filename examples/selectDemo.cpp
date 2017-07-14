@@ -375,7 +375,8 @@ int main(int argc, char **argv) {
   rectGroup = new bsg::drawableCollection("rectangles");
 
   // Now generate them and add them to the group.
-  for (int i = 0; i < 100; i++) {
+  //JZ Change number of rectagles generated to 10
+  for (int i = 0; i < 10; i++) {
 
     bsg::drawableRectangle* b = new bsg::drawableRectangle(shader, 2.0f, 2.0f, 2);
     b->setPosition(-5.0f + 0.1f * (rand()%100),
