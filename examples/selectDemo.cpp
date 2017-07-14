@@ -7,6 +7,9 @@
 // that make up the scene.
 bsg::scene scene = bsg::scene();
 
+
+//JZ Testing changes to select demo
+
 // These are the shapes that make up the scene.  They are out here in
 // the global variables so they can be available in both the main()
 // function and the renderScene() function.
