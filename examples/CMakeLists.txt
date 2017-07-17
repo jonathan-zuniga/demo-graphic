@@ -57,6 +57,15 @@ include_directories(
     ${OPENGL_LIBRARY}
     ${GLEW_LIBRARY})
 
+  add_executable(matchgameDemo matchgameDemo.cpp)
+
+  target_link_libraries(matchgameDemo bsg
+    ${FREEGLUT_LIBRARY}
+    ${OPENGL_LIBRARY}
+    ${GLEW_LIBRARY})
+
+
+
   if(MINVR_FOUND)
 
     # Redefine the include directories to include MinVR.
