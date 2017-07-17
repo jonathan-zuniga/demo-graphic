@@ -508,6 +508,12 @@ int main(int argc, char **argv) {
     // Now generate them and add them to the group.
     //JZ Change number of rectagles generated to 10
     for (int i = 0; i < 10; i++) {
+        //JZ add names to rectangles so they appear in order visually
+        std::string name = "Rectangle";
+        name += std::to_string(i);
+        
+        
+        
         bsg::drawableRectangle* b = new bsg::drawableRectangle(shader, 2.0f, 2.0f, 2);
         //JZ Modify positions from random to two rows
          /*Original
@@ -534,8 +540,8 @@ int main(int argc, char **argv) {
         }
         
         
-        
-        rectGroup->addObject(b);
+        //JZ modify addObject to include name parameter name, b
+        rectGroup->addObject(name, b);
         
         // Generate some velocities to play with these objects.
         velocities.push_back(glm::vec3(-0.05 + 0.001 * (rand()%100),
