@@ -508,12 +508,32 @@ int main(int argc, char **argv) {
     // Now generate them and add them to the group.
     //JZ Change number of rectagles generated to 10
     for (int i = 0; i < 10; i++) {
-        
         bsg::drawableRectangle* b = new bsg::drawableRectangle(shader, 2.0f, 2.0f, 2);
+        //JZ Modify positions from random to two rows
+         /*Original
         b->setPosition(-5.0f + 0.1f * (rand()%100),
                        -5.0f + 0.1f * (rand()%100),
                        -5.0f + 0.1f * (rand()%100));
         b->setRotation(0.0f, 0.0f, 0.0f);
+        */
+        if(i<5){
+            b->setPosition(-6.0f+(3.00f*i),
+                           3.0f,
+                           0.0f);
+            b->setRotation(0.0f, 0.0f, 0.0f);
+            
+        }
+        else{
+            b->setPosition(-21.0f+(3.00*i),
+                           -3.0f,
+                           0.0f);
+            b->setRotation(0.0f, 0.0f, 0.0f);
+            
+            
+            
+        }
+        
+        
         
         rectGroup->addObject(b);
         
