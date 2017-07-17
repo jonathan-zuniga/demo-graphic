@@ -16,6 +16,9 @@ bsg::scene scene = bsg::scene();
 std::vector<bsg::drawableRectangle*> rects;
 bsg::drawableCollection* rectGroup;
 
+//JZ Add cube
+bsg::drawableCube* cube;
+
 bsg::drawableAxes* axes;
 
 // Some velocities with which to play with the rectangles.
@@ -373,6 +376,16 @@ int main(int argc, char **argv) {
 
   // Make a group for all our rectangles.
   rectGroup = new bsg::drawableCollection("rectangles");
+    
+  //JZ cube declaration and parameters
+  cube = new bsg::drawableCube(axesShader, 5, glm::vec4(1.0, 1.0, 0.0, 1.0));
+  
+  glm::vec3 cubePos = cube->getPosition();
+  cubePos.x = 0.0f;
+  cubePos.y = 0.0f;
+  cubePos.z = 0.0f;
+  cube->setPosition(cubePos);
+  cube->setScale(.5f);
 
   // Now generate them and add them to the group.
   //JZ Change number of rectagles generated to 10
@@ -405,6 +418,9 @@ int main(int argc, char **argv) {
   }
 
   scene.addObject(rectGroup);
+    
+  //JZ add cube to scene
+  scene.addObject(cube);
 
   axes = new bsg::drawableAxes(axesShader, 100.0f);
 
