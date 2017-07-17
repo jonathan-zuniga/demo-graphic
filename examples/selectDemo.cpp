@@ -58,7 +58,7 @@ void renderScene() {
   oscillator += oscillationStep;
   pos.x = sin(oscillator);
   pos.y = 1.0f - cos(oscillator);
-  rectGroup->setPosition(pos);
+  //rectGroup->setPosition(pos);
 
   bsg::bsgNameList rectNames = rectGroup->getNames();
 
