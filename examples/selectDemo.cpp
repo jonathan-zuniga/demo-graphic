@@ -80,14 +80,16 @@ void renderScene() {
        it != rectGroup->end(); it++, jt++, kt++) {
 
     glm::vec3 rot = it->second->getPitchYawRoll();
-    it->second->setRotation(rot + (*kt));
+    //JZ commented out movement
+    //it->second->setRotation(rot + (*kt));
 
     // Move the rectangles, but confine them to a cube.
     glm::vec3 pos = it->second->getPosition();
     if (fabs(pos.x) > 5.0f || fabs(pos.y) > 5.0f || fabs(pos.z) > 5.0f) {
       *jt = - (*jt);
     }
-    it->second->setPosition(pos + *jt);
+      //JZ commented out movement
+      //it->second->setPosition(pos + *jt);
   }
 
   bsg::bsgNameList inside = rectGroup->insideBoundingBox(glm::vec4(0.0, 0.0, 0.0, 0.0));
