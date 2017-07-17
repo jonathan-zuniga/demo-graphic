@@ -220,6 +220,22 @@ void processNormalKeys(unsigned char key, int x, int y) {
   case 'o':
     scene.addToLookAtPosition(glm::vec3( 0.0f, 0.0f,  step));
     break;
+          
+  //JZ Added keys for cube movement
+  //JZ Reset the cubes postition to the origin 0,0,0
+  case 'r':
+    cube->setPosition(glm::vec3(0.0,0.0,0.0));
+    break;
+          
+  //JZ test position
+  case 't':
+          cube->setPosition(glm::vec3(5.0, 5.0, 0.0));
+    break;
+          
+  case '>':
+    break;
+          
+          
   default:
     if (oscillationStep == 0.0f) {
       oscillationStep = 0.03f;
