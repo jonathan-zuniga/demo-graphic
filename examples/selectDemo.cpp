@@ -7,19 +7,11 @@
 // that make up the scene.
 bsg::scene scene = bsg::scene();
 
-
-//JZ Testing changes to select demo
-//JZ Added global iterator
-bsg::drawableCollection::iterator itGlobal;
-
 // These are the shapes that make up the scene.  They are out here in
 // the global variables so they can be available in both the main()
 // function and the renderScene() function.
 std::vector<bsg::drawableRectangle*> rects;
 bsg::drawableCollection* rectGroup;
-
-//JZ Add cube
-bsg::drawableCube* cube;
 
 bsg::drawableAxes* axes;
 
@@ -30,8 +22,6 @@ std::vector<glm::vec3>   angVelocities;
 // These are part of the animation stuff, and again are out here with
 // the big boy global variables so they can be available to both the
 // interrupt handler and the render function.
-//JZ added direction counter
-int directionCounter = 0;
 float oscillator = 0.0f;
 float oscillationStep = 0.03f;
 
@@ -48,93 +38,6 @@ void init(int argc, char** argv) {
     std::cout << "Initialize GLUT display mode." << std::endl;
 }
 
-//JZ MoveSelectionshape method used to move cube across rectangles
-void moveSelectionShape(int direction){
-    glm::vec3 testPos;
-    
-    if(direction ==0){
-        ++itGlobal;
-        //    cube->setPosition(rectGroup->getObject(*itGlobal)->getPosition());
-        if(itGlobal == rectGroup->end()){
-            std::cout << "Reached End TEST " <<std::endl;
-            itGlobal=rectGroup->begin();
-            //++itGlobal;
-            
-            testPos = itGlobal->second->getPosition();
-            cube->setPosition(testPos);
-            std::cout << "name: " << itGlobal->first << " for "
-            << itGlobal->second->getName() << std::endl;
-            
-        }
-        
-        else if(itGlobal==rectGroup->begin()){
-            std::cout << "Reached Beginning TEST+ " <<std::endl;
-            //itGlobal=rectGroup->end();
-            //++itGlobal;
-            
-            testPos = itGlobal->second->getPosition();
-            cube->setPosition(testPos);
-            std::cout << "name: " << itGlobal->first << " for "
-            << itGlobal->second->getName() << std::endl;
-        }
-        
-        else {
-            //++itGlobal;
-            testPos = itGlobal->second->getPosition();
-            cube->setPosition(testPos);
-            std::cout << "name: " << itGlobal->first << " for "
-            << itGlobal->second->getName() << std::endl;
-        }
-    }
-    
-    
-    else{
-        
-        if(itGlobal==rectGroup->end()){
-            std::cout << "Reached End TEST-" << std::endl;
-            itGlobal=rectGroup->begin();
-            --itGlobal;
-            
-            
-            testPos = itGlobal->second->getPosition();
-            cube->setPosition(testPos);
-            std::cout << "name: " << itGlobal->first << " for "
-            << itGlobal->second->getName() << std::endl;
-        }
-        
-        else if(itGlobal == rectGroup->begin()){
-            std::cout << "Reached Beginning TEST " <<std::endl;
-            itGlobal=rectGroup->end();
-            --itGlobal;
-            
-            testPos = itGlobal->second->getPosition();
-            cube->setPosition(testPos);
-            std::cout << "name: " << itGlobal->first << " for "
-            << itGlobal->second->getName() << std::endl;
-        }
-        
-        else{
-            --itGlobal;
-            
-            testPos = itGlobal->second->getPosition();
-            cube->setPosition(testPos);
-            std::cout << "name: " << itGlobal->first << " for "
-            << itGlobal->second->getName() << std::endl;
-        }
-    }
-    
-    //JZ Print out position of cube
-    std::cout << "The cube is inside rectangle " << itGlobal->second->getName();
-    glm::vec3 cubePos = cube->getPosition();
-    std::cout << " at position (" << cubePos.x << "," << cubePos.y << "," << cubePos.z << ")";
-    std::cout << std::endl;
-    
-    
-    
-    
-    
-}
-
 // This is the heart of any graphics program, the render function.  It
 // is called each time through the main graphics loop, and re-draws
 // the scene according to whatever has changed since the last time it
@@ -149,7 +52,7 @@ void renderScene() {
     oscillator += oscillationStep;
     pos.x = sin(oscillator);
     pos.y = 1.0f - cos(oscillator);
-    //rectGroup->setPosition(pos);
+    rectGroup->setPosition(pos);
     
     bsg::bsgNameList rectNames = rectGroup->getNames();
     
@@ -171,16 +74,14 @@ void renderScene() {
          it != rectGroup->end(); it++, jt++, kt++) {
         
         glm::vec3 rot = it->second->getPitchYawRoll();
-        //JZ commented out movement
-        //it->second->setRotation(rot + (*kt));
+        it->second->setRotation(rot + (*kt));
         
         // Move the rectangles, but confine them to a cube.
         glm::vec3 pos = it->second->getPosition();
         if (fabs(pos.x) > 5.0f || fabs(pos.y) > 5.0f || fabs(pos.z) > 5.0f) {
             *jt = - (*jt);
         }
-        //JZ commented out movement
-        //it->second->setPosition(pos + *jt);
+        it->second->setPosition(pos + *jt);
     }
     
     bsg::bsgNameList inside = rectGroup->insideBoundingBox(glm::vec4(0.0, 0.0, 0.0, 0.0));
@@ -311,31 +212,6 @@ void processNormalKeys(unsigned char key, int x, int y) {
         case 'o':
             scene.addToLookAtPosition(glm::vec3( 0.0f, 0.0f,  step));
             break;
-            
-            //JZ Added keys for cube movement
-            //JZ Reset the cubes postition to the origin 0,0,0
-        case 'r':
-            cube->setPosition(glm::vec3(0.0,0.0,0.0));
-            break;
-            
-            //JZ test position
-        case 't':
-            cube->setPosition(glm::vec3(5.0, 5.0, 0.0));
-            break;
-            
-            //JZ move selection to the right
-        case '>':
-            directionCounter=0;
-            moveSelectionShape(directionCounter);
-            break;
-            
-            //JZ move selection to the left
-        case '<':
-            directionCounter=1;
-            moveSelectionShape(directionCounter);
-            break;
-            
-            
         default:
             if (oscillationStep == 0.0f) {
                 oscillationStep = 0.03f;
@@ -495,53 +371,16 @@ int main(int argc, char **argv) {
     // Make a group for all our rectangles.
     rectGroup = new bsg::drawableCollection("rectangles");
     
-    //JZ cube declaration and parameters
-    cube = new bsg::drawableCube(axesShader, 5, glm::vec4(1.0, 1.0, 0.0, 1.0));
-    
-    glm::vec3 cubePos = cube->getPosition();
-    cubePos.x = 0.0f;
-    cubePos.y = 0.0f;
-    cubePos.z = 0.0f;
-    cube->setPosition(cubePos);
-    cube->setScale(.5f);
-    
     // Now generate them and add them to the group.
-    //JZ Change number of rectagles generated to 10
-    for (int i = 0; i < 10; i++) {
-        //JZ add names to rectangles so they appear in order visually
-        std::string name = "Rectangle";
-        name += std::to_string(i);
-        
-        
+    for (int i = 0; i < 100; i++) {
         
         bsg::drawableRectangle* b = new bsg::drawableRectangle(shader, 2.0f, 2.0f, 2);
-        //JZ Modify positions from random to two rows
-         /*Original
         b->setPosition(-5.0f + 0.1f * (rand()%100),
                        -5.0f + 0.1f * (rand()%100),
                        -5.0f + 0.1f * (rand()%100));
         b->setRotation(0.0f, 0.0f, 0.0f);
-        */
-        if(i<5){
-            b->setPosition(-6.0f+(3.00f*i),
-                           3.0f,
-                           0.0f);
-            b->setRotation(0.0f, 0.0f, 0.0f);
-            
-        }
-        else{
-            b->setPosition(-21.0f+(3.00*i),
-                           -3.0f,
-                           0.0f);
-            b->setRotation(0.0f, 0.0f, 0.0f);
-            
-            
-            
-        }
         
-        
-        //JZ modify addObject to include name parameter name, b
-        rectGroup->addObject(name, b);
+        rectGroup->addObject(b);
         
         // Generate some velocities to play with these objects.
         velocities.push_back(glm::vec3(-0.05 + 0.001 * (rand()%100),
@@ -551,9 +390,6 @@ int main(int argc, char **argv) {
                                           -0.05 + 0.001 * (rand()%100),
                                           -0.05 + 0.001 * (rand()%100)));
     }
-    //JZ Initialzie global iterator after creation of rectangle group
-    itGlobal=rectGroup->begin();
-    
     
     // You can define an iterator on a drawableCollection object.  Just
     // print a few of the names in the object.
@@ -565,9 +401,6 @@ int main(int argc, char **argv) {
     }
     
     scene.addObject(rectGroup);
-    
-    //JZ add cube to scene
-    scene.addObject(cube);
     
     axes = new bsg::drawableAxes(axesShader, 100.0f);
     
